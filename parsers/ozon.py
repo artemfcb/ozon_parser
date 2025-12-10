@@ -158,7 +158,7 @@ class OzonParser:
                         if image:
                             break
                 
-                    print(image)  
+
                     if title and price is not None:
                         products_data.append({
                             'title':title,
@@ -183,7 +183,7 @@ class OzonParser:
                 
                 
             if products_data:
-                data = products_data.copy()
+                # data = products_data.copy()
                 df = pd.DataFrame(products_data)
                 df_sorted = df.sort_values('price')
                 min_price_product = df_sorted.iloc[0]
@@ -194,17 +194,16 @@ class OzonParser:
                 print(f"💰 Самый дешевый товар: {min_price_product['title']}")
                 print(f"💵 Цена: {min_price_product['price']} руб.")
                 print(f"📊 Всего обработано товаров: {len(products_data)}")
-                        
-                df_sorted.to_csv('ozon_products.csv',index=False,encoding='utf-8-sig')
-                message_text = ''
-                message_text +=('\n топ 5 самых дешёвых товаров')
-                message_text +=('-'*20)
-                
-                for idx,row in df_sorted.head().iterrows():
-                    title_short = row['title'[:70]+"..." if len(row['title'])> 70 else row['title']]
-                    message_text +=(f'{row['price']} руб. - {title_short}')
-                return message_text
-            
+
+                # df_sorted.to_csv('ozon_products.csv',index=False,encoding='utf-8-sig')
+                # message_text = '\n топ 5 самых дешёвых товаров'
+                counter = 0
+
+                return df_sorted
+
+
+
+
             else:
                 print("товар не найден") 
                 with open("ozon_results_debug.html","w",encoding="utf-8") as file:

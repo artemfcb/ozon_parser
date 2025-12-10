@@ -95,7 +95,20 @@ def handle_message(message):
         if len(target) >= 3:
             bot.send_message(message.chat.id,'Идёт поиск пожалуйста подождтите🔍')
             data = ozon_parser.get_info(target=target)
-            bot.send_message(data)
+
+
+            if data is not None:
+                counter = 0
+                for idx, row in data.head().iterrows():
+                    title_short = row['title'][:70] + "..." if len(row['title']) > 70 else row['title']
+                    title_short +=("\nЦена" + str(row['price']))
+                    bot.send_photo(message.chat.id, row['image_url'], caption=title_short)
+                    counter =+ 1
+                    if counter == 5:
+                        break
+            else:
+                bot.send_message(message.chat.id, "Ошибка при  поиске товара")
+
         
         
     # обработка отмены

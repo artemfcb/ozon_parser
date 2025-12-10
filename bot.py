@@ -101,7 +101,9 @@ def handle_message(message):
                 counter = 0
                 for idx, row in data.head().iterrows():
                     title_short = row['title'][:70] + "..." if len(row['title']) > 70 else row['title']
-                    title_short +=("\nЦена" + str(row['price']))
+                    title_short +=("\nЦена: " + str(row['price']))
+                    product_link = row['product_link']
+                    print(product_link)
                     bot.send_photo(message.chat.id, row['image_url'], caption=title_short)
                     counter =+ 1
                     if counter == 5:

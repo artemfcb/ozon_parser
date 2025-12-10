@@ -112,8 +112,23 @@ class OzonParser:
                         if title_elem and title_elem.text.strip():
                             title = title_elem.text.strip()
                             break
-
                         
+                        
+                    product_link = None
+                    product_link_selectors = [
+                        'a[href^="/product/"]',
+                        'a[href^="/product/"] span.tsBody500Medium',
+                        'a[href*="product"] .tsBody500Medium'
+                    ]
+                    for product_link_selector in product_link_selectors:
+                        link_elem = card.select_one(product_link_selector)
+                        if link_elem and link_elem.get('href'):
+                            link = link_elem.get('href')
+                            break
+                        
+                    product_link = link
+                    if product_link is None:
+                        print(f'{i+1} не удалось извлечь ссылку')
                     price = None
                     price_selectors = [
                         ".tsHeadline500Medium",  # Основная цена (как в примере)
@@ -163,7 +178,8 @@ class OzonParser:
                         products_data.append({
                             'title':title,
                             'price':price,
-                            'image_url':image
+                            'image_url':image,
+                            'product_link':product_link
                         })
                     
                     else:
